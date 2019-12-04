@@ -27,7 +27,8 @@ for i in range("number of class"):
 model.sess.run([Rs],feed_dict={X:batch_in, model.keep_prob :p})
 </code></pre>
 ref : [Explaining NonLinear Classification Decisions with Deep Taylor Decomposition]: https://arxiv.org/pdf/1512.02479.pd
-</hr>
+
+* * *
 
 # 2. How to use Network Dissection
 ## (1). please write down!
