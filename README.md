@@ -1,6 +1,8 @@
-#1.How to use Deep Taylor Decomposition 
+# 1.How to use Deep Taylor Decomposition 
 
-##1. Define model structure from trained model for calculation of relevance score
+## (1). Define model structure from trained model for calculation of relevance score
+
+
 weights = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='scopename')
 activations = tf.get_collection('activation_collection_name')
 X = activations[0]
@@ -19,11 +21,11 @@ Rs = []
 for i in range("number of class"):
     Rs.append(taylor(i))
 
-##2.run session for getting relvance score
+## (2).run session for getting relvance score
 model.sess.run([Rs],feed_dict={X:batch_in, model.keep_prob :p})
 
 
-#2. How to use Network Dissection
-##1. please write down!
+# 2. How to use Network Dissection
+##(1). please write down!
 
 
