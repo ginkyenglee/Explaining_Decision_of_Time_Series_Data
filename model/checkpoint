@@ -1,0 +1,2 @@
+model_checkpoint_path: "/data2/gin/savedmodel/ICML(UCR-HAR)_CNN_MCdropout_1e-05_16/500.ckpt"
+all_model_checkpoint_paths: "/data2/gin/savedmodel/ICML(UCR-HAR)_CNN_MCdropout_1e-05_16/500.ckpt"
