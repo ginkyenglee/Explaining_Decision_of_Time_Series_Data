@@ -8,8 +8,8 @@ def plot_train_history(train_df, valid_df,save_path):
     #Loss graph
     fig = plt.figure(figsize=(10,5))
     ax = fig.add_subplot(1,2,1)
-    ax.plot(train_df['loss'].tolist(), label='train loss')
-    ax.plot(train_df['loss'].tolist(), label='valid loss', color='Red')
+    ax.plot(train_df['loss'].tolist(), label='train loss',color ="blue")
+    ax.plot(valid_df['loss'].tolist(), label='valid loss', color='Red')
 
     plt.xlim(0,len(train_df))
     plt.legend(fontsize=12, loc='upper right')
@@ -22,8 +22,8 @@ def plot_train_history(train_df, valid_df,save_path):
     
     #Acc graph
     ax = fig.add_subplot(1,2,2)
-    ax.plot(train_df['acc'].tolist(), label='train acc')
-    ax.plot(train_df['acc'].tolist(), label='valid acc', color='Red')
+    ax.plot(train_df['acc'].tolist(), label='train acc',color ="blue")
+    ax.plot(valid_df['acc'].tolist(), label='valid acc', color='Red')
 
     plt.xlim(0,None)
     plt.legend(fontsize=12, loc='upper right')
