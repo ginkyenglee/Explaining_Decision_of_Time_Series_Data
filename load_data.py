@@ -25,7 +25,48 @@ def load_data(data_name):
         trainx, testx, trainy, testy = train_test_split(reshapedX, reshapedY, test_size=0.33, random_state=321)
         batch_size = min(int(trainx.shape[0]/10), 16)
         
+    elif "Occumpancy" in data_name:
+        from sklearn.model_selection import train_test_split
+        
+        data = pd.read_csv('./data/Occumpancy.txt')
+        df = data.values
+        X, y = df[:,2:-1], df[:,-1]
 
+        reshapedX = []
+        reshapedY = []
+        for i in range(len(X)):
+            if i < len(X)-117:
+                reshapedX.append(X[i:i+117, :])
+                reshapedY.append(y[i+117-1])
+
+        reshapedX = np.array(reshapedX, dtype=np.float64)
+        reshapedY = np.array(reshapedY, dtype=np.int64)
+        reshapedY = reshapedY.reshape(reshapedY.shape[0],1)
+        
+        trainx, testx, trainy, testy = train_test_split(reshapedX, reshapedY, test_size=0.33, random_state=321)
+        batch_size = min(int(trainx.shape[0]/10), 16)    
+
+    elif "Gas_sensor" in data_name:
+        from sklearn.model_selection import train_test_split
+
+        data = np.loadtxt('./data/Gas_sensor.dat', skiprows=1)
+
+        df = pd.DataFrame(data).values
+        X, y = data[:10000,1:], data[:10000,1]
+
+        reshapedX = []
+        reshapedY = []
+        for i in range(len(X)):
+            if i < len(X)-256:
+                reshapedX.append(X[i:i+256, :])
+                reshapedY.append(y[i+256-1])
+
+        reshapedX = np.array(reshapedX, dtype=np.float64)
+        reshapedY = np.array(reshapedY, dtype=np.int64)
+        reshapedY = reshapedY.reshape(reshapedY.shape[0],1)
+
+        trainx, testx, trainy, testy = train_test_split(reshapedX, reshapedY, test_size=0.33, random_state=321)
+        batch_size = min(int(trainx.shape[0]/10), 16)   
         
     elif "HAR" in data_name:
         from pandas import read_csv
