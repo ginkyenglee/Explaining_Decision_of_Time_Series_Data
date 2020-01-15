@@ -29,7 +29,7 @@ class CNN_MC_dropout:
         self.cost =tf.reduce_mean(self.cross_entropy)
         self.optimizer = tf.train.AdamOptimizer(self.l_rate).minimize(self.cost)
 
-        self.correct_pred = tf.equal(tf.round(self.prediction),self.y)
+        self.correct_pred = tf.equal(tf.argmax(self.prediction,1),tf.argmax(self.y,1))
         self.accuracy = tf.reduce_mean(tf.cast(self.correct_pred, tf.float32))
 
         init = tf.global_variables_initializer()
@@ -147,7 +147,7 @@ class CNN_MC_dropout_last_conv_turnoff:
         self.cost =tf.reduce_mean(self.cross_entropy)
         self.optimizer = tf.train.AdamOptimizer(self.l_rate).minimize(self.cost)
 
-        self.correct_pred = tf.equal(tf.round(self.prediction),self.y)
+        self.correct_pred = tf.equal(tf.argmax(self.prediction,1),tf.argmax(self.y,1))
         self.accuracy = tf.reduce_mean(tf.cast(self.correct_pred, tf.float32))
 
         init = tf.global_variables_initializer()
@@ -271,7 +271,7 @@ class CNN_MC_dropout_input_turnoff:
         self.cost =tf.reduce_mean(self.cross_entropy)
         self.optimizer = tf.train.AdamOptimizer(self.l_rate).minimize(self.cost)
 
-        self.correct_pred = tf.equal(tf.round(self.prediction),self.y)
+        self.correct_pred = tf.equal(tf.argmax(self.prediction,1),tf.argmax(self.y,1))
         self.accuracy = tf.reduce_mean(tf.cast(self.correct_pred, tf.float32))
 
         init = tf.global_variables_initializer()
@@ -325,7 +325,7 @@ class CNN_MC_dropout_input_turnoff:
                                         self.x: data,
                                        self.keep_prob: keep_prob,
                                        self.is_dropout : is_dropout,
-                                       self.threshold_weight : np.ones(data.shape[0]*128*128).reshape(-1,1,128,128)})
+                                       self.threshold_weight : np.ones(data.shape[0]*self.height*self.width*self.input_channel).reshape(-1,self.height,self.width,self.input_channel)})
         return cost,acc
 
     def test(self, data, target, keep_prob,is_dropout):
@@ -334,7 +334,7 @@ class CNN_MC_dropout_input_turnoff:
                                         self.x: data,
                                        self.keep_prob: keep_prob,
                                        self.is_dropout : is_dropout,
-                                       self.threshold_weight :np.ones(data.shape[0]*128*128).reshape(-1,1,128,128)})
+                                       self.threshold_weight :np.ones(data.shape[0]*self.height*self.width*self.input_channel).reshape(-1,self.height,self.width,self.input_channel)})
         return cost,acc
 
     def get_last_conv_output(self, data, keep_prob,is_dropout):
@@ -342,7 +342,7 @@ class CNN_MC_dropout_input_turnoff:
                              feed_dict={self.x: data,
                                        self.keep_prob: keep_prob,
                                        self.is_dropout : is_dropout,
-                                       self.threshold_weight : np.ones(data.shape[0]*128*128).reshape(-1,1,128,128)})
+                                       self.threshold_weight : np.ones(data.shape[0]*self.height*self.width*self.input_channel).reshape(-1,self.height,self.width,self.input_channel)})
         return relu3
     
     def predict(self, data, keep_prob,is_dropout,threshold_weight):
