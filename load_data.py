@@ -1,6 +1,15 @@
 import pandas as pd
 import numpy as np
 
+def readucr(filename):
+    if "UWave" in filename:
+        data = np.loadtxt(filename)
+    else:
+        data = np.loadtxt(filename, diameter=',')
+    Y = data[:,0]
+    X = data[:,1:]
+    return X, Y
+        
 def load_data(data_name):
     print("Load data {}".format(data_name))
     if "EEG" in data_name:
@@ -23,7 +32,6 @@ def load_data(data_name):
         reshapedY = reshapedY.reshape(reshapedY.shape[0],1)
         
         trainx, testx, trainy, testy = train_test_split(reshapedX, reshapedY, test_size=0.33, random_state=321)
-        batch_size = min(int(trainx.shape[0]/10), 16)
         
     elif "Occumpancy" in data_name:
         from sklearn.model_selection import train_test_split
@@ -44,7 +52,6 @@ def load_data(data_name):
         reshapedY = reshapedY.reshape(reshapedY.shape[0],1)
         
         trainx, testx, trainy, testy = train_test_split(reshapedX, reshapedY, test_size=0.33, random_state=321)
-        batch_size = min(int(trainx.shape[0]/10), 16)    
 
     elif "Gas_sensor" in data_name:
         from sklearn.model_selection import train_test_split
@@ -66,18 +73,12 @@ def load_data(data_name):
         reshapedY = reshapedY.reshape(reshapedY.shape[0],1)
 
         trainx, testx, trainy, testy = train_test_split(reshapedX, reshapedY, test_size=0.33, random_state=321)
-        batch_size = min(int(trainx.shape[0]/10), 16)   
-        
+
     elif "HAR" in data_name:
         from pandas import read_csv
         from numpy import dstack
 
-        def readucr(filename):
-            data = np.loadtxt(filename, delimiter = ',')
-            Y = data[:,0]
-            X = data[:,1:]
-            return X, Y
-        
+
         # load a single file as a numpy array
         def load_file(filepath):
             dataframe = read_csv(filepath, header=None, delim_whitespace=True)
@@ -118,11 +119,17 @@ def load_data(data_name):
         # load all test
         testx, testy = load_dataset('test', data_path)
         
-    batch_size = min(int(trainx.shape[0]/10), 16)
+    elif "UWaveGesture" in data_name:
+        trainx, trainy = readucr('./data/'+data_name+'/'+data_name+'_TEST.txt')
+        testx, testy = readucr('./data/'+data_name+'/'+data_name+'_TRAIN.txt')
+
+    batch_size = min(int(trainx.shape[0]/10), 64)
     print ("batch size:{}".format(batch_size))    
     print("train data {},{}".format(trainx.shape, trainy.shape))
     print("test data {},{}".format(testx.shape, testy.shape)) 
     return trainx, testx,trainy,testy,batch_size
+
+
 
 def class_breakdown(data):
     # convert the numpy array into a dataframe
